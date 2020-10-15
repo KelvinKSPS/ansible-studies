@@ -1,0 +1,8 @@
+-  
+  name: Ping the target servers
+  hosts: all
+  tasks:
+    - name: Ping Test
+      ping: 
+    - name: Getting /etc/hosts
+      command: cat /etc/hosts 
