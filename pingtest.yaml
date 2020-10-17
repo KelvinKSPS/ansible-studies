@@ -1,8 +1,45 @@
 -  
-  name: Ping the target servers
+  name: Install and Deploy Localstack to a Ubuntu Server
   hosts: all
+  become: yes
+
   tasks:
-    - name: Ping Test
-      ping: 
-    - name: Getting /etc/hosts
-      command: cat /etc/hosts 
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+      
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Install Docker-como Module for Python
+      pip:
+        name: docker-compose
+
+    - name: Download docker-compose file for localstack
+      get_url: url=https://raw.githubusercontent.com/localstack/localstack/master/docker-compose.yml dest=/tmp/docker-compose.yml
+ 
+    - name: Set docker-image to full version
+      replace:
+        path: /tmp/docker-compose.yml
+        regexp: 'localstack/localstack'
+        replace: "localstack/localstack-full"
+
+    - name: Deploying localstack
+      command: docker-compose -f /tmp/docker-compose.yml up -d
