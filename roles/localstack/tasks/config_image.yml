@@ -1,0 +1,10 @@
+- name: Download docker-compose file for localstack
+  get_url: 
+    url: https://raw.githubusercontent.com/localstack/localstack/master/docker-compose.yml 
+    dest: /tmp/docker-compose.yml
+    
+- name: Set docker-image to full version
+  replace:
+    path: /tmp/docker-compose.yml
+    regexp: 'localstack/localstack'
+    replace: "localstack/localstack-full"

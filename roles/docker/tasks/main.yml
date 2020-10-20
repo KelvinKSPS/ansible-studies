@@ -1,0 +1,3 @@
+---
+# tasks file for docker
+- include_tasks: setup.yml

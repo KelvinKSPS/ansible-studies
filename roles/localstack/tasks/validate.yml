@@ -1,0 +1,3 @@
+- name: Check that you can connect (GET) to the page and it returns a status 200
+  uri:
+    url: 'http://{{ ansible_host }}:4566/health'

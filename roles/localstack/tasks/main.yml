@@ -1,0 +1,5 @@
+---
+# tasks file for localstack
+- include_tasks: config_image.yml
+- include_tasks: deploy.yml
+- include_tasks: validate.yml

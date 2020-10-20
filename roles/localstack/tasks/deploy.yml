@@ -1,0 +1,2 @@
+- name: Deploying localstack
+  command: docker-compose -f /tmp/docker-compose.yml up -d

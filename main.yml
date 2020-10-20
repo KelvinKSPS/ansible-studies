@@ -1,0 +1,8 @@
+---
+- name: Install and Deploy Localstack to a Ubuntu Server
+  hosts: all
+  become: yes
+  roles:
+    - prerequisites
+    - docker
+    - localstack
